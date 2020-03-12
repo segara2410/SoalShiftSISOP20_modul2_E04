@@ -27,7 +27,6 @@ int isNumber(char source[])
   return 1;
 }
 
-
 int main(int argc, char **argv) 
 {
   if(argc == 5)
