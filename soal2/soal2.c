@@ -80,7 +80,7 @@ int main(int argc, char **argv)
     tm_info = localtime(&timer);
 
     char folder_name[100];
-    strftime(folder_name, 100, "/home/segara/SoalShiftSISOP20_modul2_E04/soal2/%Y-%m-%d_%H:%M:%S", tm_info);
+    strftime(folder_name, 100, "%Y-%m-%d_%H:%M:%S", tm_info);
 
     pid_t child_id;
     child_id = fork();
