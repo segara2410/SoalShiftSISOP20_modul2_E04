@@ -15,13 +15,13 @@ int isDirectory(const char *path)
 
 int main() 
 { 
-	int n1 = fork();
-	int n2 = fork(); 
+  int n1 = fork();
+  int n2 = fork(); 
   int status;
 
   close(STDERR_FILENO);
 
-	if (n1 > 0 && n2 > 0) 
+  if (n1 > 0 && n2 > 0) 
   { 
     while ((wait(&status)) > 0);
 
@@ -48,9 +48,6 @@ int main()
             char* argexec[] = {"mv", source_file,
               "/home/segara/SoalShiftSISOP20_modul2_E04/soal3/indomie/", NULL};
             execv("/bin/mv", argexec);
-            // puts(dir->d_name);
-            // char* argexec[] = {"bash", "/home/segara/SoalShiftSISOP20_modul2_E04/soal3/move.sh", NULL};
-            // execv("/bin/bash", argexec);
           }
           else
           {
@@ -60,8 +57,6 @@ int main()
             {
               if(fork() == 0)
               {
-                // char* argexec[] = {"bash", "/home/segara/SoalShiftSISOP20_modul2_E04/soal3/1.sh", NULL};
-                // execv("/bin/bash", argexec);
                 char target_file[1000];
                 FILE *target;
                 sprintf(target_file, 
@@ -74,8 +69,7 @@ int main()
               {
                 while ((wait(&status)) > 0);
                 sleep(3);
-                // char* argexec[] = {"bash", "/home/segara/SoalShiftSISOP20_modul2_E04/soal3/2.sh", NULL};
-                // execv("/bin/bash", argexec);
+                
                 char target_file[1000];
                 FILE *target;
                 sprintf(target_file, 
@@ -108,16 +102,13 @@ int main()
             char* argexec[] = {"mv", source_file,
               "/home/segara/SoalShiftSISOP20_modul2_E04/soal3/sedaap/", NULL};
             execv("/bin/mv", argexec);
-            // puts(dir->d_name);
-            // char* argexec[] = {"bash", "/home/segara/SoalShiftSISOP20_modul2_E04/soal3/move.sh", NULL};
-            // execv("/bin/bash", argexec);
           }
         }        
       }
     }
-	} 
-	else if (n1 == 0 && n2 > 0) 
-	{ 
+  } 
+  else if (n1 == 0 && n2 > 0) 
+  { 
     while ((wait(&status)) > 0);
     pid_t child = fork();
     if (child == 0) 
@@ -125,8 +116,6 @@ int main()
       char *argexec[] = {"mkdir", "-p", 
         "/home/segara/SoalShiftSISOP20_modul2_E04/soal3/indomie", NULL};
       execv("/bin/mkdir", argexec);
-      // char* argexec[] = {"bash", "/home/segara/SoalShiftSISOP20_modul2_E04/soal3/mkdiri.sh", NULL};
-      // execv("/bin/bash", argexec);
     }
     else
     {
@@ -136,18 +125,13 @@ int main()
       char *argexec[] = {"mkdir", "-p", 
         "/home/segara/SoalShiftSISOP20_modul2_E04/soal3/sedaap", NULL};
       execv("/bin/mkdir", argexec);
-      // char* argexec[] = {"bash", "/home/segara/SoalShiftSISOP20_modul2_E04/soal3/mkdir.sh", NULL};
-      // execv("/bin/bash", argexec);
     }
   } 
-	else if (n1 > 0 && n2 == 0) 
-	{ 
+  else if (n1 > 0 && n2 == 0) 
+  { 
     char* argexec[] = {"unzip", "-oq", 
       "/home/segara/SoalShiftSISOP20_modul2_E04/soal3/jpg.zip", NULL};
     execv("/usr/bin/unzip", argexec);
-
-    // char* argexec[] = {"bash", "/home/segara/SoalShiftSISOP20_modul2_E04/soal3/unzip.sh", NULL};
-    // execv("/bin/bash", argexec);
-	}
-	return 0; 
+  }
+  return 0; 
 } 

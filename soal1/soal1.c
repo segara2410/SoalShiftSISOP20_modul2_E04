@@ -3,7 +3,6 @@
 #include <sys/stat.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <fcntl.h>
 #include <errno.h>
 #include <unistd.h>
 #include <syslog.h>
@@ -12,8 +11,9 @@
 
 int isAsterisk(char source[])
 {
-  if (source[0] == '*')
-    return 1;
+  if (strlen(source) == 1)
+    if (source[0] == '*')
+      return 1;
 
   return 0;
 }
