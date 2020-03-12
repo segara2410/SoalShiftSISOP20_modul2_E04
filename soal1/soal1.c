@@ -49,7 +49,7 @@ int main(int argc, char **argv)
       }
     }
 
-    if (arg[1] >= 59 && arg[2] >= 59 && arg[3] >= 23)
+    if (arg[1] > 59 || arg[2] > 59 || arg[3] > 23)
     {
       printf("argument is not valid\n");
       exit(EXIT_FAILURE);
