@@ -84,7 +84,7 @@ int main(int argc, char **argv)
       tm_info = localtime(&timer);
 
       if ((tm_info->tm_sec == arg[1] || arg[1] == -1) && (tm_info->tm_min == arg[2] || arg[2] == -1) 
-        && (tm_info->tm_hour || arg[3] == -1))
+        && (tm_info->tm_hour == arg[3] || arg[3] == -1))
       {
         pid_t child_id;
         child_id = fork();
