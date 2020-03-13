@@ -242,3 +242,145 @@ Kelompok E 04
   - Untuk mode A killer akan membunuh semua proses (termasuk child) dengan minus pid, 
     sedangkan untuk mode B, killer hanya akan membunuh parent agar tidak membuat child baru.
   - killer dibuat menggunakan bash yang dijadikan executable dengan `chmod u+x killer.sh` lalu direname menjadi `killer`.
+
+## 3. Program C Untuk Mengekstrak Folder dan File
+>Source code file: [Soal2](https://github.com/segara2410/SoalShiftSISOP20_modul2_E04/tree/master/soal3)
+
+- Pertama, pindahkan direktori dengan
+  ```
+  chdir("/home/segara/modul2"); 
+  ```
+- Buat child, untuk menjalankan setiap proses. Dalam hal ini, fork() dilakukan dua kali untuk membuat tiga child.
+  Child ketiga tidak digunakan karena berjalan bersamaan dengan child kedua.
+- Proses yang berjalan pertama adalah Child kedua yang melakukan unzip
+  ```
+  else if (n1 > 0 && n2 == 0) 
+  { 
+    char* argexec[] = {"unzip", "-oq", 
+      "/home/segara/modul2/jpg.zip", NULL};
+    execv("/usr/bin/unzip", argexec);
+  }
+  ```
+- Child pertama akan berjalan setelah Child kedua
+  ```
+  else if (n1 == 0 && n2 > 0) 
+  { 
+    while ((wait(&status)) > 0);
+    pid_t child = fork();
+    if (child == 0) 
+    {
+      char *argexec[] = {"mkdir", "-p", 
+        "/home/segara/modul2/indomie", NULL};
+      execv("/bin/mkdir", argexec);
+    }
+    else
+    {
+      while ((wait(&status)) > 0);
+      sleep(5);
+
+      char *argexec[] = {"mkdir", "-p", 
+        "/home/segara/modul2/sedaap", NULL};
+      execv("/bin/mkdir", argexec);
+    }
+  } 
+  ```
+  - Proses ini kemudian membuat child yang membuat folder indomie.
+  - Setelah pembuatan folder indomie selesai, proses ini akan membuat file sedaap.
+- Kemudian parent berjalan setelah child pertama selesai
+  ```
+  if (n1 > 0 && n2 > 0) 
+  { 
+    while ((wait(&status)) > 0);
+
+    DIR *d;
+    struct dirent *dir;
+    chdir("/home/segara/modul2/jpg/"); 
+    d = opendir(".");
+    if (d)
+    {
+      while ((dir = readdir(d)) != NULL)
+      {
+        if(strcmp(dir->d_name, ".") == 0 || strcmp(dir->d_name, "..") == 0)
+          continue;
+
+        if(isDirectory(dir->d_name))
+        {
+          if(fork() == 0)
+          {
+            char source_file[1000];
+            sprintf(source_file, 
+              "/home/segara/modul2/jpg/%s", 
+              dir->d_name);
+
+            char* argexec[] = {"mv", source_file,
+              "/home/segara/modul2/indomie/", NULL};
+            execv("/bin/mv", argexec);
+          }
+          else
+          {
+            while ((wait(&status)) > 0);
+            
+            if(fork() == 0)
+            {
+              if(fork() == 0)
+              {
+                char target_file[1000];
+                FILE *target;
+                sprintf(target_file, 
+                  "/home/segara/modul2/indomie/%s/coba1.txt", 
+                  dir->d_name);
+                target = fopen(target_file, "w");
+                fclose(target);
+
+                sleep(3);
+                
+                FILE *second_target;
+                sprintf(target_file, 
+                  "/home/segara/modul2/indomie/%s/coba2.txt", 
+                  dir->d_name);
+                second_target = fopen(target_file, "w");
+                fclose(second_target);
+                exit(0);
+              }
+            }
+            else
+            {
+              while ((wait(&status)) > 0);
+              exit(0);
+            }
+          }
+        }
+        else
+        {
+          while ((wait(&status)) > 0);
+          if(fork() == 0)
+          {
+            while ((wait(&status)) > 0);
+
+            char source_file[1000];
+            sprintf(source_file, 
+              "/home/segara/modul2/jpg/%s", 
+              dir->d_name);
+
+            char* argexec[] = {"mv", source_file,
+              "/home/segara/modul2/sedaap/", NULL};
+            execv("/bin/mv", argexec);
+          }
+        }        
+      }
+    }
+  }
+  ```
+  - Dalam parent akan dilakukan directory traverse pada jpg menggunakan fungsi dan struct dari dirent.h.
+  - Dalam loop akan dilakukan pengecekan apakah isi directory tersebut merupakan file atau folder menggunakan fungsi isDirectory()
+  ```
+  int isDirectory(const char *path)
+  {
+    struct stat path_stat;
+    stat(path, &path_stat);
+    return S_ISDIR(path_stat.st_mode);
+  }
+  ```
+  - Kemudian jika objek tersebut adalah folder, proses ini akan membuat child untuk memindahkan folder, kemudian proses ini membuat coba1.txt, lalu setelah 3 detik membuat coba2.txt.
+  - Jika objek tersebut adalah file, proses ini akan membuat child untuk memindahkan ke sedaap. 
+  - setelah selesai, proses ini melakukan hal yang sama untuk objek lainnya.
