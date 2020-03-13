@@ -14,7 +14,9 @@ int isDirectory(const char *path)
 }
 
 int main() 
-{ 
+{
+  chdir("/home/segara/modul2"); 
+
   int n1 = fork();
   int n2 = fork(); 
   int status;
@@ -27,7 +29,7 @@ int main()
 
     DIR *d;
     struct dirent *dir;
-    chdir("/home/segara/SoalShiftSISOP20_modul2_E04/soal3/jpg/"); 
+    chdir("/home/segara/modul2/jpg/"); 
     d = opendir(".");
     if (d)
     {
@@ -42,11 +44,11 @@ int main()
           {
             char source_file[1000];
             sprintf(source_file, 
-              "/home/segara/SoalShiftSISOP20_modul2_E04/soal3/jpg/%s", 
+              "/home/segara/modul2/jpg/%s", 
               dir->d_name);
 
             char* argexec[] = {"mv", source_file,
-              "/home/segara/SoalShiftSISOP20_modul2_E04/soal3/indomie/", NULL};
+              "/home/segara/modul2/indomie/", NULL};
             execv("/bin/mv", argexec);
           }
           else
@@ -60,23 +62,19 @@ int main()
                 char target_file[1000];
                 FILE *target;
                 sprintf(target_file, 
-                  "/home/segara/SoalShiftSISOP20_modul2_E04/soal3/indomie/%s/coba1.txt", 
+                  "/home/segara/modul2/indomie/%s/coba1.txt", 
                   dir->d_name);
                 target = fopen(target_file, "w");
                 fclose(target);
-              }
-              else
-              {
-                while ((wait(&status)) > 0);
+
                 sleep(3);
                 
-                char target_file[1000];
-                FILE *target;
+                FILE *second_target;
                 sprintf(target_file, 
-                  "/home/segara/SoalShiftSISOP20_modul2_E04/soal3/indomie/%s/coba2.txt", 
+                  "/home/segara/modul2/indomie/%s/coba2.txt", 
                   dir->d_name);
-                target = fopen(target_file, "w");
-                fclose(target);
+                second_target = fopen(target_file, "w");
+                fclose(second_target);
                 exit(0);
               }
             }
@@ -96,11 +94,11 @@ int main()
 
             char source_file[1000];
             sprintf(source_file, 
-              "/home/segara/SoalShiftSISOP20_modul2_E04/soal3/jpg/%s", 
+              "/home/segara/modul2/jpg/%s", 
               dir->d_name);
 
             char* argexec[] = {"mv", source_file,
-              "/home/segara/SoalShiftSISOP20_modul2_E04/soal3/sedaap/", NULL};
+              "/home/segara/modul2/sedaap/", NULL};
             execv("/bin/mv", argexec);
           }
         }        
@@ -114,7 +112,7 @@ int main()
     if (child == 0) 
     {
       char *argexec[] = {"mkdir", "-p", 
-        "/home/segara/SoalShiftSISOP20_modul2_E04/soal3/indomie", NULL};
+        "/home/segara/modul2/indomie", NULL};
       execv("/bin/mkdir", argexec);
     }
     else
@@ -123,14 +121,14 @@ int main()
       sleep(5);
 
       char *argexec[] = {"mkdir", "-p", 
-        "/home/segara/SoalShiftSISOP20_modul2_E04/soal3/sedaap", NULL};
+        "/home/segara/modul2/sedaap", NULL};
       execv("/bin/mkdir", argexec);
     }
   } 
   else if (n1 > 0 && n2 == 0) 
   { 
     char* argexec[] = {"unzip", "-oq", 
-      "/home/segara/SoalShiftSISOP20_modul2_E04/soal3/jpg.zip", NULL};
+      "/home/segara/modul2/jpg.zip", NULL};
     execv("/usr/bin/unzip", argexec);
   }
   return 0; 
