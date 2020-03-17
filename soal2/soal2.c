@@ -17,10 +17,10 @@ void generateKiller(char source[])
   int status;
 
   if (strcmp(source, "-a") == 0)
-    fprintf(target, "#!/bin/bash\nkill -9 -%d", getpid());
+    fprintf(target, "#!/bin/bash\nkill -9 -%d\nrm killer", getpid());
 
   if (strcmp(source, "-b") == 0)
-    fprintf(target, "#!/bin/bash\nkill %d", getpid());
+    fprintf(target, "#!/bin/bash\nkill %d\nrm killer", getpid());
   
   if(fork() == 0)
   {  
