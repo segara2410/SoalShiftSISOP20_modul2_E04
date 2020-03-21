@@ -143,14 +143,10 @@ Kelompok E 04
           }
           sleep(5);
         }
-        if (fork() == 0)
-        {
-          char folder_name_zip[100];
-          sprintf(folder_name_zip, "%s.zip", folder_name);
-          char *argv[] = {"zip", "-qrm", folder_name_zip, folder_name, NULL};
-          execv("/usr/bin/zip", argv);
-        }
-        exit(0);
+        char folder_name_zip[100];
+        sprintf(folder_name_zip, "%s.zip", folder_name);
+        char *argv[] = {"zip", "-qrm", folder_name_zip, folder_name, NULL};
+        execv("/usr/bin/zip", argv);
       }
     }
     else
